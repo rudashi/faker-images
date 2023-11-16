@@ -11,9 +11,14 @@ class FakerImageProvider extends Base
         string $dir = null,
         int $width = 640,
         int $height = 480,
+        string $category = null,
+        bool $fullPath = true,
+        bool $randomize = true,
+        string $word = null,
+        bool $gray = false,
         string $imageExtension = 'png'
     ) {
-        
+
         list($r, $g, $b) = self::getBackgroundColor();
         $image = imagecreate($width, $height);
         $background = imagecolorallocate($image, $r, $g, $b);
@@ -36,9 +41,14 @@ class FakerImageProvider extends Base
         $dir = $dir === null ? '/tmp' : $dir;
         $name = md5(uniqid().time().random_int(10000, 99999));
         $filename = $name . "." . $imageExtension;
+
         $filePath = $dir . DIRECTORY_SEPARATOR . $filename;
         imagejpeg($image, $filePath);
-        
+
+        if ($fullPath === false) {
+            return $filename;
+        }
+
         return $filePath;
     }
 
